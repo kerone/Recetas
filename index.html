@@ -131,7 +131,7 @@
   <h2>El fuego</h2>
   <div class="paso-receta">
     <p>Paellero de gas con corona ≥ 30 cm. En hornillo doméstico: usar difusor o girar la paella cada 3-4 minutos.</p>
-    <p style="margin-top:.4rem">Escala de referencia <strong>1-10</strong> (10 = máximo). Con paellero de dos aros: hasta el paso 8 basta el aro interior; los dos aros solo para hervir el caldo y los primeros 8 minutos del arroz.</p>
+    <p style="margin-top:.4rem">Escala de referencia <strong>1-10</strong> (10 = máximo). Con paellero de dos aros: hasta el paso 9 basta el aro interior; los dos aros solo para hervir el caldo y los primeros 8 minutos del arroz.</p>
     <p style="margin-top:.4rem">Sin números en el mando: <strong>4-5</strong> = llama que no sobresale de la base del quemador; <strong>7</strong> = llama tocando bien el fondo sin lamer los laterales; <strong>9-10</strong> = todo lo que dé.</p>
   </div>
 
@@ -149,7 +149,7 @@
 
   <div class="paso-receta">
     <h3>3 · Verduras — 6 min <span class="fuego">Fuego 5</span></h3>
-    <p>Apartar la carne a los bordes. En el centro: alcachofa + ferraura + garrofó. Sofreír, no freír. La alcachofa debe coger color en los cortes.</p>
+    <p>Apartar la carne a los bordes. En el centro: alcachofa + ferraura. Sofreír, no freír. La alcachofa debe coger color en los cortes.</p>
   </div>
 
   <div class="paso-receta">
@@ -158,12 +158,17 @@
   </div>
 
   <div class="paso-receta">
-    <h3>5 · Pimentón — 30 segundos <span class="fuego">Fuego 3 o paella apartada</span></h3>
+    <h3>5 · Garrofó y ajo — 2 min <span class="fuego">Fuego 4-5</span></h3>
+    <p>Con el tomate ya oscuro y seco, añadir el garrofó y el ajo picado. Un par de vueltas para que el ajo suelte aroma sin tostarse (amarga). Enseguida, pimentón y agua.</p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>6 · Pimentón — 30 segundos <span class="fuego">Fuego 3 o paella apartada</span></h3>
     <p>Riesgo máximo de quemado (amarga). Truco: apartar la paella del fuego, remover el pimentón 20 segundos y añadir el agua inmediatamente.</p>
   </div>
 
   <div class="paso-receta">
-    <h3>6 · Caldo — 25-30 min <span class="fuego">Fuego en DOS tramos</span></h3>
+    <h3>7 · Caldo — 25-30 min <span class="fuego">Fuego en DOS tramos</span></h3>
     <p>Agua hasta rozar los remaches de las asas (<span class="dyn" data-k="aguaAprox">~1,1 L</span>). Azafrán infusionado dentro.</p>
     <ul>
       <li><strong>Tramo 1</strong> (min 0-5): fuego 9-10 hasta hervor franco.</li>
@@ -173,17 +178,17 @@
   </div>
 
   <div class="paso-receta">
-    <h3>7 · Probar la sal <span class="fuego">Sin cambiar el fuego</span></h3>
+    <h3>8 · Probar la sal <span class="fuego">Sin cambiar el fuego</span></h3>
     <p>El caldo debe saber un punto pasado de sal: el arroz lo absorbe.</p>
   </div>
 
   <div class="paso-receta">
-    <h3>8 · El arroz <span class="fuego">Fuego 8-9 ANTES de echarlo</span></h3>
+    <h3>9 · El arroz <span class="fuego">Fuego 8-9 ANTES de echarlo</span></h3>
     <p>Subir el fuego antes de añadir el arroz: el arroz enfría el caldo y hay que recuperar el hervor en menos de 1 minuto. Echar los <span class="dyn" data-k="arroz">240 g</span> en caballón (línea de asa a asa) y repartir con la espumadera. A partir de aquí <strong>NO SE REMUEVE JAMÁS</strong>.</p>
   </div>
 
   <div class="paso-receta">
-    <h3>9 · Cocción — 17-18 min en tres fases <span class="fuego">Fuego variable</span></h3>
+    <h3>10 · Cocción — 17-18 min en tres fases <span class="fuego">Fuego variable</span></h3>
     <ul>
       <li><strong>Min 0-8:</strong> fuego 8-9 — hervor vivo en toda la paella (dos aros si los hay).</li>
       <li><strong>Min 8-16:</strong> fuego 4-5 — hervor suave, burbujeo perezoso (solo aro interior). Vigilar el min 14-16: con <span class="dyn" data-k="arroz">240 g</span> el caldo se consume algo antes.</li>
@@ -192,7 +197,7 @@
   </div>
 
   <div class="paso-receta">
-    <h3>10 · Reposo — 5 min <span class="fuego">Fuego apagado</span></h3>
+    <h3>11 · Reposo — 5 min <span class="fuego">Fuego apagado</span></h3>
     <p>Fuera del fuego, ramita de romero encima, tapada con un paño (nunca papel de aluminio a presión). Servir de la propia paella.</p>
   </div>
 
@@ -269,6 +274,7 @@
       ferraura: g(120),
       garrofo: g(80),
       tomate: '≈ ' + medios(tomate/100) + ' mediano(s) (~' + nf(tomate) + ' g)',
+      ajo: medios(2*f) + ' diente(s)',
       aove: nf(round5(60*f)) + ' ml',
       pimenton: cuartos(1*f) + ' cdta rasa(s)',
       azafran: nf(Math.max(5, Math.round(15*f))) + ' hebras',
@@ -287,8 +293,9 @@
     ['Conejo troceado', '', 'conejo'],
     ['Alcachofa', 'en sextos; en verano congelada; si fresca, frotar los cortes con limón', 'alcachofa'],
     ['Ferraura', 'judía verde plana', 'ferraura'],
-    ['Garrofó', 'fresco o seco hidratado 12 h', 'garrofo'],
     ['Tomate maduro rallado', '', 'tomate'],
+    ['Garrofó', 'fresco o seco hidratado 12 h; tras el tomate, antes del agua', 'garrofo'],
+    ['Ajo', 'picado fino; tras el tomate, antes del agua', 'ajo'],
     ['AOVE', '', 'aove'],
     ['Pimentón dulce', '', 'pimenton'],
     ['Azafrán', 'tostar 10 s en sartén seca, infusionar en tacita de agua caliente', 'azafran'],
