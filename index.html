@@ -107,7 +107,7 @@
     <button id="mas" aria-label="Aumentar tamaño">+</button>
   </div>
   <p class="info-tamano" id="infoTamano"></p>
-  <p class="nota-escala">Cantidades recalculadas por superficie del fondo (fondo ≈ boca − 6 cm).
+  <p class="nota-escala">Cantidades recalculadas por superficie del fondo (estimado según el ala de cada tamaño).
   La capa de arroz se mantiene en un dedo. Receta base validada en 36 cm.</p>
 </div>
 
@@ -207,7 +207,7 @@
   <h2>Claves de esta paella</h2>
   <div class="paso-receta">
     <ul>
-      <li>240 g de arroz en fondo de 30 cm = capa de un dedo. Con 275 g quedó gruesa (validado).</li>
+      <li><span class="dyn" data-k="arroz">240 g</span> de arroz en fondo de <span class="dyn" data-k="fondoCm">30 cm</span> = capa de un dedo. A partir de <span class="dyn" data-k="arrozGrueso">~275 g</span> la capa queda gruesa (validado en 36 cm: con 275 g quedó gruesa).</li>
       <li>La bomba perdona errores (aguanta sin pasarse); la senia da más sabor pero se pasa rápido.</li>
       <li>Si se quiere comer más, subir carne, no arroz: la carne queda entre el arroz y no afecta al grosor.</li>
     </ul>
@@ -223,13 +223,16 @@
   'use strict';
 
   /* ---------- escalado ---------- */
-  var TAMANOS = [24,26,28,30,32,34,36,38,40,42,46,50,55,60];
-  var BASE_BOCA = 36, BASE_FONDO = 30, RIM = 6; // fondo ≈ boca − 6 cm
+  var TAMANOS = [24,26,28,30,32,34,36,38,40,42,46,50,55,60,65,70,80,90,100];
+  var BASE_BOCA = 36, BASE_FONDO = 30;
   var boca = parseInt(localStorage.getItem('paellaBoca'), 10);
   if (TAMANOS.indexOf(boca) === -1) boca = BASE_BOCA;
 
+  function fondoDe(b){ // el ala crece con el tamaño: 36→30, 50→42, 60→50, 90→75
+    return b - Math.max(6, Math.round(b/6));
+  }
   function factor(){
-    var fondo = boca - RIM;
+    var fondo = fondoDe(boca);
     return (fondo * fondo) / (BASE_FONDO * BASE_FONDO);
   }
 
@@ -272,7 +275,9 @@
       agua: litros(1.1*f) + ' inicial',
       aguaAprox: litros(1.1*f),
       sal: 'El caldo debe quedar un punto salado',
-      romero: nf(Math.max(1, Math.round(f))) + ' ramita(s)'
+      romero: nf(Math.max(1, Math.round(f))) + ' ramita(s)',
+      fondoCm: fondoDe(boca) + ' cm',
+      arrozGrueso: '~' + nf(round5(275*f)) + ' g'
     };
   }
 
@@ -312,7 +317,7 @@
     var f = factor(), v = calc(f);
     elBoca.textContent = boca;
     var raciones = Math.max(1, Math.round(3*f));
-    elInfo.textContent = 'Fondo ≈ ' + (boca - RIM) + ' cm · ≈ ' + raciones +
+    elInfo.textContent = 'Fondo ≈ ' + fondoDe(boca) + ' cm · ≈ ' + raciones +
       (raciones === 1 ? ' ración' : ' raciones') +
       (boca === BASE_BOCA ? ' (2 adultos + 2 niños)' : '');
     document.querySelectorAll('[data-k]').forEach(function(el){
