@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#c96a1b">
+<title>Paella valenciana auténtica</title>
+<style>
+  :root{
+    --fondo:#faf6ef; --tarjeta:#ffffff; --tinta:#2d2418; --tinta2:#6b5d49;
+    --acento:#c96a1b; --acento2:#e8a13d; --borde:#e8dfd0; --chip:#fdf1e0; --chip-tinta:#9a4d0a;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --fondo:#1c1712; --tarjeta:#292219; --tinta:#f0e8db; --tinta2:#b3a58e;
+      --acento:#e8a13d; --acento2:#c96a1b; --borde:#3d3427; --chip:#3d2f1a; --chip-tinta:#f0c078;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--fondo);color:var(--tinta);line-height:1.55;
+    max-width:640px;margin:0 auto;padding:0 0 3rem;
+  }
+  header{padding:1.4rem 1.1rem .6rem;text-align:center}
+  h1{font-size:1.45rem;line-height:1.2;color:var(--acento)}
+  .lema{font-size:.85rem;color:var(--tinta2);margin-top:.35rem}
+
+  /* ------ selector de tamaño ------ */
+  .tamano{
+    background:var(--tarjeta);border:1px solid var(--borde);border-radius:16px;
+    margin:0.9rem 1rem;padding:.9rem 1rem;text-align:center;
+    box-shadow:0 1px 4px rgba(0,0,0,.05);
+  }
+  .tamano label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--tinta2);font-weight:600}
+  .paso{display:flex;align-items:center;justify-content:center;gap:1rem;margin:.5rem 0 .3rem}
+  .paso button{
+    width:52px;height:52px;border-radius:50%;border:none;font-size:1.7rem;line-height:1;
+    background:var(--acento);color:#fff;cursor:pointer;touch-action:manipulation;
+  }
+  .paso button:active{transform:scale(.93)}
+  .paso button:disabled{opacity:.3}
+  .valor{font-size:2.1rem;font-weight:700;min-width:7rem}
+  .valor small{font-size:1rem;font-weight:400;color:var(--tinta2)}
+  .info-tamano{font-size:.85rem;color:var(--tinta2)}
+  .nota-escala{font-size:.72rem;color:var(--tinta2);margin-top:.45rem;opacity:.85}
+
+  /* ------ pestañas ------ */
+  .tabs{
+    position:sticky;top:0;z-index:10;display:flex;gap:.5rem;
+    padding:.6rem 1rem;background:var(--fondo);
+  }
+  .tab{
+    flex:1;padding:.75rem 0;font-size:1rem;font-weight:600;border-radius:12px;
+    border:1px solid var(--borde);background:var(--tarjeta);color:var(--tinta2);
+    cursor:pointer;touch-action:manipulation;
+  }
+  .tab[aria-selected="true"]{background:var(--acento);border-color:var(--acento);color:#fff}
+
+  main{padding:0 1rem}
+  section.panel[hidden]{display:none}
+
+  /* ------ ingredientes ------ */
+  ul.ing{list-style:none}
+  ul.ing li{
+    display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+    padding:.7rem .2rem;border-bottom:1px solid var(--borde);
+  }
+  ul.ing .n{font-size:.95rem}
+  ul.ing .n small{display:block;color:var(--tinta2);font-size:.78rem;margin-top:.1rem}
+  ul.ing .c{font-weight:700;text-align:right;color:var(--acento);font-size:.98rem;max-width:50%}
+  .aviso{
+    background:var(--chip);color:var(--chip-tinta);border-radius:12px;
+    padding:.7rem .9rem;font-size:.85rem;margin:1rem 0;
+  }
+
+  /* ------ receta ------ */
+  h2{font-size:1.05rem;margin:1.4rem 0 .5rem;color:var(--acento)}
+  .paso-receta{
+    background:var(--tarjeta);border:1px solid var(--borde);border-radius:14px;
+    padding:.85rem 1rem;margin:.6rem 0;
+  }
+  .paso-receta h3{font-size:.98rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:.3rem}
+  .fuego{
+    font-size:.72rem;font-weight:700;background:var(--chip);color:var(--chip-tinta);
+    border-radius:99px;padding:.15rem .6rem;white-space:nowrap;
+  }
+  .paso-receta p, .paso-receta li{font-size:.9rem;color:var(--tinta)}
+  .paso-receta ul{padding-left:1.1rem;margin:.3rem 0}
+  .dyn{font-weight:700;color:var(--acento)}
+  footer{text-align:center;font-size:.75rem;color:var(--tinta2);margin-top:2.2rem;padding:0 1rem}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Paella valenciana auténtica</h1>
+  <p class="lema">Sin cebolla, sin chorizo, sin colorante artificial: solo azafrán.</p>
+</header>
+
+<div class="tamano">
+  <label for="mas">Tamaño de la paella (boca)</label>
+  <div class="paso">
+    <button id="menos" aria-label="Reducir tamaño">−</button>
+    <div class="valor"><span id="boca">36</span> <small>cm</small></div>
+    <button id="mas" aria-label="Aumentar tamaño">+</button>
+  </div>
+  <p class="info-tamano" id="infoTamano"></p>
+  <p class="nota-escala">Cantidades recalculadas por superficie del fondo (fondo ≈ boca − 6 cm).
+  La capa de arroz se mantiene en un dedo. Receta base validada en 36 cm.</p>
+</div>
+
+<nav class="tabs" role="tablist">
+  <button class="tab" role="tab" id="tabIng" aria-selected="true" aria-controls="panelIng">Ingredientes</button>
+  <button class="tab" role="tab" id="tabRec" aria-selected="false" aria-controls="panelRec">Receta</button>
+</nav>
+
+<main>
+
+<!-- ============ INGREDIENTES ============ -->
+<section class="panel" id="panelIng" role="tabpanel" aria-labelledby="tabIng">
+  <ul class="ing" id="listaIng"></ul>
+  <div class="aviso">El agua es orientativa: <strong>el nivel de los remaches de las asas manda</strong>.
+  Si quieres comer más, sube la carne, no el arroz.</div>
+</section>
+
+<!-- ============ RECETA ============ -->
+<section class="panel" id="panelRec" role="tabpanel" aria-labelledby="tabRec" hidden>
+
+  <h2>El fuego</h2>
+  <div class="paso-receta">
+    <p>Paellero de gas con corona ≥ 30 cm. En hornillo doméstico: usar difusor o girar la paella cada 3-4 minutos.</p>
+    <p style="margin-top:.4rem">Escala de referencia <strong>1-10</strong> (10 = máximo). Con paellero de dos aros: hasta el paso 8 basta el aro interior; los dos aros solo para hervir el caldo y los primeros 8 minutos del arroz.</p>
+    <p style="margin-top:.4rem">Sin números en el mando: <strong>4-5</strong> = llama que no sobresale de la base del quemador; <strong>7</strong> = llama tocando bien el fondo sin lamer los laterales; <strong>9-10</strong> = todo lo que dé.</p>
+  </div>
+
+  <h2>Elaboración</h2>
+
+  <div class="paso-receta">
+    <h3>1 · Preparación <span class="fuego">Fuego 4-5</span></h3>
+    <p>Nivelar la paella (comprobar que el aceite queda centrado). Aceite al centro, pizca de sal en corona alrededor (protege el acero del borde). El aceite debe brillar sin humear.</p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>2 · Dorar la carne — 20 min <span class="fuego">Fuego 6-7 constante</span></h3>
+    <p>Pollo y conejo <strong>MUY dorados</strong>, casi tostados, por todas sus caras. La carne debe chisporrotear siempre; si se agarra al fondo antes de dorar, bajar a 6. Nunca a tope: quema fuera y queda cruda dentro. <strong>Es el paso más importante de la receta: aquí nace el sabor. No acortar.</strong></p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>3 · Verduras — 6 min <span class="fuego">Fuego 5</span></h3>
+    <p>Apartar la carne a los bordes. En el centro: alcachofa + ferraura + garrofó. Sofreír, no freír. La alcachofa debe coger color en los cortes.</p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>4 · Tomate — 8 min <span class="fuego">Fuego 4-5</span></h3>
+    <p>Hueco al centro: tomate rallado hasta que quede oscuro y seco. Debe reducir sin salpicar fuerte.</p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>5 · Pimentón — 30 segundos <span class="fuego">Fuego 3 o paella apartada</span></h3>
+    <p>Riesgo máximo de quemado (amarga). Truco: apartar la paella del fuego, remover el pimentón 20 segundos y añadir el agua inmediatamente.</p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>6 · Caldo — 25-30 min <span class="fuego">Fuego en DOS tramos</span></h3>
+    <p>Agua hasta rozar los remaches de las asas (<span class="dyn" data-k="aguaAprox">~1,1 L</span>). Azafrán infusionado dentro.</p>
+    <ul>
+      <li><strong>Tramo 1</strong> (min 0-5): fuego 9-10 hasta hervor franco.</li>
+      <li><strong>Tramo 2</strong> (min 5-25): fuego 7 — hervor vivo mantenido, burbujeo continuo en toda la superficie, sin borbotón violento. Objetivo: extraer sabor de la carne y reducir hasta los remaches.</li>
+    </ul>
+    <p>Si al min 20 no ha bajado al nivel, subir a 8. Si redujo de más, añadir agua caliente y esperar a que recupere el hervor. Nivel final = justo por debajo de los remaches. <strong>El caldo nunca deja de hervir: caldo parado = sabor plano.</strong></p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>7 · Probar la sal <span class="fuego">Sin cambiar el fuego</span></h3>
+    <p>El caldo debe saber un punto pasado de sal: el arroz lo absorbe.</p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>8 · El arroz <span class="fuego">Fuego 8-9 ANTES de echarlo</span></h3>
+    <p>Subir el fuego antes de añadir el arroz: el arroz enfría el caldo y hay que recuperar el hervor en menos de 1 minuto. Echar los <span class="dyn" data-k="arroz">240 g</span> en caballón (línea de asa a asa) y repartir con la espumadera. A partir de aquí <strong>NO SE REMUEVE JAMÁS</strong>.</p>
+  </div>
+
+  <div class="paso-receta">
+    <h3>9 · Cocción — 17-18 min en tres fases <span class="fuego">Fuego variable</span></h3>
+    <ul>
+      <li><strong>Min 0-8:</strong> fuego 8-9 — hervor vivo en toda la paella (dos aros si los hay).</li>
+      <li><strong>Min 8-16:</strong> fuego 4-5 — hervor suave, burbujeo perezoso (solo aro interior). Vigilar el min 14-16: con <span class="dyn" data-k="arroz">240 g</span> el caldo se consume algo antes.</li>
+      <li><strong>Min 16-18 (socarrat):</strong> fuego 8-9 durante 60-90 segundos. Guiarse por el oído (crepitar) y la nariz (huele a tostado, no a quemado). Es cuestión de segundos.</li>
+    </ul>
+  </div>
+
+  <div class="paso-receta">
+    <h3>10 · Reposo — 5 min <span class="fuego">Fuego apagado</span></h3>
+    <p>Fuera del fuego, ramita de romero encima, tapada con un paño (nunca papel de aluminio a presión). Servir de la propia paella.</p>
+  </div>
+
+  <h2>Rescates</h2>
+  <div class="paso-receta">
+    <ul>
+      <li><strong>Min 16, arroz hecho pero queda caldo</strong> → fuego a tope 1 minuto para evaporar.</li>
+      <li><strong>Arroz duro y sin caldo</strong> → chorrito de agua hirviendo por encima, nunca remover.</li>
+    </ul>
+  </div>
+
+  <h2>Claves de esta paella</h2>
+  <div class="paso-receta">
+    <ul>
+      <li>240 g de arroz en fondo de 30 cm = capa de un dedo. Con 275 g quedó gruesa (validado).</li>
+      <li>La bomba perdona errores (aguanta sin pasarse); la senia da más sabor pero se pasa rápido.</li>
+      <li>Si se quiere comer más, subir carne, no arroz: la carne queda entre el arroz y no afecta al grosor.</li>
+    </ul>
+  </div>
+
+</section>
+</main>
+
+<footer>Receta base: paella de 36 cm de boca / 30 cm de fondo (2 adultos + 2 niños).</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- escalado ---------- */
+  var TAMANOS = [24,26,28,30,32,34,36,38,40,42,46,50,55,60];
+  var BASE_BOCA = 36, BASE_FONDO = 30, RIM = 6; // fondo ≈ boca − 6 cm
+  var boca = parseInt(localStorage.getItem('paellaBoca'), 10);
+  if (TAMANOS.indexOf(boca) === -1) boca = BASE_BOCA;
+
+  function factor(){
+    var fondo = boca - RIM;
+    return (fondo * fondo) / (BASE_FONDO * BASE_FONDO);
+  }
+
+  /* ---------- formato (es-ES) ---------- */
+  function nf(x, dec){
+    return x.toLocaleString('es-ES', {minimumFractionDigits: dec || 0, maximumFractionDigits: dec || 0});
+  }
+  function round5(x){ return Math.max(5, Math.round(x/5)*5); }
+  function medios(x){ // redondeo a medios: 1,5 → "1½"
+    var h = Math.max(0.5, Math.round(x*2)/2), i = Math.floor(h);
+    if (h === i) return String(i);
+    return (i > 0 ? i : '') + '½';
+  }
+  function cuartos(x){ // redondeo a cuartos para cucharaditas
+    var q = Math.max(0.25, Math.round(x*4)/4), i = Math.floor(q), r = q - i;
+    var frac = {0.25:'¼', 0.5:'½', 0.75:'¾'}[r] || '';
+    if (!frac) return String(i);
+    return (i > 0 ? i : '') + frac;
+  }
+  function litros(x){
+    var l = Math.round(x*20)/20;
+    return '~' + nf(l, l % 1 === 0 ? 0 : (l*10) % 1 === 0 ? 1 : 2) + ' L';
+  }
+
+  /* ---------- ingredientes ---------- */
+  function calc(f){
+    var g = function(base){ return nf(round5(base*f)) + ' g'; };
+    var tomate = Math.round(100*f/10)*10;
+    return {
+      arroz: g(240),
+      pollo: g(450),
+      conejo: g(250),
+      alcachofa: medios(1*f) + ' grande(s) o ' + medios(2*f) + ' mediana(s)',
+      ferraura: g(120),
+      garrofo: g(80),
+      tomate: '≈ ' + medios(tomate/100) + ' mediano(s) (~' + nf(tomate) + ' g)',
+      aove: nf(round5(60*f)) + ' ml',
+      pimenton: cuartos(1*f) + ' cdta rasa(s)',
+      azafran: nf(Math.max(5, Math.round(15*f))) + ' hebras',
+      agua: litros(1.1*f) + ' inicial',
+      aguaAprox: litros(1.1*f),
+      sal: 'El caldo debe quedar un punto salado',
+      romero: nf(Math.max(1, Math.round(f))) + ' ramita(s)'
+    };
+  }
+
+  var FILAS = [
+    ['Arroz senia o bomba (D.O. Valencia)', '', 'arroz'],
+    ['Pollo troceado', 'muslo/contramuslo con hueso', 'pollo'],
+    ['Conejo troceado', '', 'conejo'],
+    ['Alcachofa', 'en sextos; en verano congelada; si fresca, frotar los cortes con limón', 'alcachofa'],
+    ['Ferraura', 'judía verde plana', 'ferraura'],
+    ['Garrofó', 'fresco o seco hidratado 12 h', 'garrofo'],
+    ['Tomate maduro rallado', '', 'tomate'],
+    ['AOVE', '', 'aove'],
+    ['Pimentón dulce', '', 'pimenton'],
+    ['Azafrán', 'tostar 10 s en sartén seca, infusionar en tacita de agua caliente', 'azafran'],
+    ['Agua', 'el nivel de los remaches manda', 'agua'],
+    ['Sal', '', 'sal'],
+    ['Romero (opcional)', 'al reposo', 'romero']
+  ];
+
+  var lista = document.getElementById('listaIng');
+  FILAS.forEach(function(fila){
+    var li = document.createElement('li');
+    var n = document.createElement('div'); n.className = 'n'; n.textContent = fila[0];
+    if (fila[1]){ var s = document.createElement('small'); s.textContent = fila[1]; n.appendChild(s); }
+    var c = document.createElement('div'); c.className = 'c'; c.dataset.k = fila[2];
+    li.appendChild(n); li.appendChild(c);
+    lista.appendChild(li);
+  });
+
+  /* ---------- pintado ---------- */
+  var elBoca = document.getElementById('boca');
+  var elInfo = document.getElementById('infoTamano');
+  var btnMenos = document.getElementById('menos');
+  var btnMas = document.getElementById('mas');
+
+  function pintar(){
+    var f = factor(), v = calc(f);
+    elBoca.textContent = boca;
+    var raciones = Math.max(1, Math.round(3*f));
+    elInfo.textContent = 'Fondo ≈ ' + (boca - RIM) + ' cm · ≈ ' + raciones +
+      (raciones === 1 ? ' ración' : ' raciones') +
+      (boca === BASE_BOCA ? ' (2 adultos + 2 niños)' : '');
+    document.querySelectorAll('[data-k]').forEach(function(el){
+      if (v[el.dataset.k] !== undefined) el.textContent = v[el.dataset.k];
+    });
+    var i = TAMANOS.indexOf(boca);
+    btnMenos.disabled = i === 0;
+    btnMas.disabled = i === TAMANOS.length - 1;
+    localStorage.setItem('paellaBoca', boca);
+  }
+
+  btnMenos.addEventListener('click', function(){
+    var i = TAMANOS.indexOf(boca);
+    if (i > 0){ boca = TAMANOS[i-1]; pintar(); }
+  });
+  btnMas.addEventListener('click', function(){
+    var i = TAMANOS.indexOf(boca);
+    if (i < TAMANOS.length - 1){ boca = TAMANOS[i+1]; pintar(); }
+  });
+
+  /* ---------- pestañas ---------- */
+  var tabIng = document.getElementById('tabIng'), tabRec = document.getElementById('tabRec');
+  var panelIng = document.getElementById('panelIng'), panelRec = document.getElementById('panelRec');
+  function activar(tab){
+    var esIng = tab === tabIng;
+    tabIng.setAttribute('aria-selected', esIng);
+    tabRec.setAttribute('aria-selected', !esIng);
+    panelIng.hidden = !esIng;
+    panelRec.hidden = esIng;
+  }
+  tabIng.addEventListener('click', function(){ activar(tabIng); });
+  tabRec.addEventListener('click', function(){ activar(tabRec); });
+
+  pintar();
+})();
+</script>
+</body>
+</html>
